@@ -530,16 +530,24 @@ const updateCartUI = () => {
     });
 };
 
-// Apply coupon code event listener
+// Apply or Remove coupon code event listener
 document.querySelector('#apply-coupon-btn')?.addEventListener('click', (e) => {
-    if (couponApplied) return;
-    
-    couponApplied = true;
     const btn = e.target;
-    btn.textContent = 'Applied';
-    btn.classList.add('applied');
-    btn.disabled = true;
-    
+    if (couponApplied) {
+        // Remove coupon
+        couponApplied = false;
+        btn.textContent = 'Apply';
+        btn.classList.remove('applied');
+        btn.style.backgroundColor = '';
+        btn.style.borderColor = '';
+    } else {
+        // Apply coupon
+        couponApplied = true;
+        btn.textContent = 'Remove';
+        btn.classList.add('applied');
+        btn.style.backgroundColor = '#57606f'; // grey color for remove option
+        btn.style.borderColor = '#57606f';
+    }
     updateCartUI();
 });
 
@@ -724,6 +732,8 @@ document.querySelector('#profile-logout-btn')?.addEventListener('click', (e) => 
     if (applyBtn) {
         applyBtn.textContent = 'Apply';
         applyBtn.classList.remove('applied');
+        applyBtn.style.backgroundColor = '';
+        applyBtn.style.borderColor = '';
         applyBtn.disabled = false;
     }
     
