@@ -103,11 +103,72 @@ locations.forEach(item => {
     });
 });
 
+// --- Promo Banner Carousel Slider ---
+let currentSlide = 0;
+const slides = document.querySelectorAll('.carousel-slide');
+const dots = document.querySelectorAll('.carousel-dots .dot');
+const totalSlides = slides.length;
+
+const showSlide = (index) => {
+    if (index >= totalSlides) currentSlide = 0;
+    else if (index < 0) currentSlide = totalSlides - 1;
+    else currentSlide = index;
+    
+    const track = document.querySelector('.carousel-track');
+    if (track) {
+        track.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
+    
+    dots.forEach((dot, idx) => {
+        dot.classList.toggle('active', idx === currentSlide);
+    });
+};
+
+document.querySelector('#next-slide')?.addEventListener('click', () => {
+    showSlide(currentSlide + 1);
+});
+
+document.querySelector('#prev-slide')?.addEventListener('click', () => {
+    showSlide(currentSlide - 1);
+});
+
+dots.forEach((dot, idx) => {
+    dot.addEventListener('click', () => showSlide(idx));
+});
+
+// Auto slide-show transition every 5 seconds
+setInterval(() => {
+    showSlide(currentSlide + 1);
+}, 5000);
+
+
+// --- Restaurant Brands Category Filters ---
+const brandCards = document.querySelectorAll('.brand-card');
+const menuGroups = document.querySelectorAll('.restaurant-menu-group');
+
+brandCards.forEach(card => {
+    card.addEventListener('click', () => {
+        brandCards.forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+        
+        const filter = card.getAttribute('data-filter');
+        
+        menuGroups.forEach(group => {
+            if (filter === 'all' || group.getAttribute('data-brand') === filter) {
+                group.style.display = 'block';
+            } else {
+                group.style.display = 'none';
+            }
+        });
+    });
+});
+
+
 // --- Live Search Logic ---
 // Build index of food items on demand
 const getFoodItemsIndex = () => {
     const items = [];
-    document.querySelectorAll('.box-container .box, .speciality .box').forEach(box => {
+    document.querySelectorAll('.box-container .box').forEach(box => {
         const titleEl = box.querySelector('h3');
         const imgEl = box.querySelector('img');
         const priceEl = box.querySelector('.price');
@@ -115,16 +176,7 @@ const getFoodItemsIndex = () => {
         if (titleEl) {
             const name = titleEl.textContent.trim();
             const img = imgEl ? imgEl.getAttribute('src') : '';
-            let priceText = '₹150';
-            if (priceEl) {
-                priceText = priceEl.textContent.trim();
-            } else {
-                // Find potential parent pricing or fall back
-                const boxSpan = box.querySelector('.content span');
-                if (boxSpan && boxSpan.textContent.includes('₹')) {
-                    priceText = boxSpan.textContent.trim();
-                }
-            }
+            let priceText = priceEl ? priceEl.textContent.trim() : '₹150';
             items.push({ name, img, priceText, element: box });
         }
     });
@@ -149,7 +201,7 @@ searchInput?.addEventListener('input', () => {
     searchResults.innerHTML = '';
     
     if (matches.length === 0) {
-        searchResults.innerHTML = '<div style="padding: 15px; font-size: 1.5rem; text-align: center; color: #747d8c;">No dishes found. Try searching for burger, pizza, ice-cream...</div>';
+        searchResults.innerHTML = '<div style="padding: 15px; font-size: 1.5rem; text-align: center; color: #747d8c;">No dishes found. Try searching for burger, pizza, wrap, or biryani...</div>';
         return;
     }
     
@@ -169,7 +221,7 @@ searchInput?.addEventListener('input', () => {
             toggleModal('search-overlay', 'close');
             match.element.scrollIntoView({ behavior: 'smooth', block: 'center' });
             
-            // Add temporary highlight effect
+            // Highlight result box
             match.element.style.outline = '4px solid #ff3838';
             match.element.style.transition = 'outline 0.3s ease';
             setTimeout(() => {
@@ -183,15 +235,6 @@ searchInput?.addEventListener('input', () => {
 
 // --- Dynamic Cart Logic ---
 let cart = [];
-
-// Parse and clean price text to raw integer
-const cleanPriceVal = (priceText) => {
-    let cleanText = priceText.replace(/[^0-9-]/g, ''); // keep numbers and dashes
-    if (cleanText.includes('-')) {
-        cleanText = cleanText.split('-')[0]; // take min price in range
-    }
-    return parseInt(cleanText) || 150;
-};
 
 const updateCartUI = () => {
     const cartCountEl = document.querySelector('#cart-count');
@@ -278,34 +321,18 @@ const addToCart = (name, price, img) => {
 
 // Wire the popular foods and specials order buttons to add to cart
 const setupOrderButtons = () => {
-    // Intercept clicks on popular section order buttons
-    document.querySelectorAll('.popular .box .btn, .gallery .box .btn, .speciality .box .btn').forEach(btn => {
+    document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
+            const name = btn.getAttribute('data-name');
+            const price = parseInt(btn.getAttribute('data-price')) || 150;
+            const brand = btn.getAttribute('data-brand') || '';
             const box = btn.closest('.box');
-            if (box) {
-                const heading = box.querySelector('h3');
-                const img = box.querySelector('img');
-                const priceEl = box.querySelector('.price');
-                
-                if (heading && img) {
-                    const foodName = heading.textContent.trim();
-                    const foodImg = img.getAttribute('src');
-                    let priceText = '₹150';
-                    
-                    if (priceEl) {
-                        priceText = priceEl.textContent;
-                    } else {
-                        const boxSpan = box.querySelector('.content span');
-                        if (boxSpan && boxSpan.textContent.includes('₹')) {
-                            priceText = boxSpan.textContent;
-                        }
-                    }
-                    
-                    const priceVal = cleanPriceVal(priceText);
-                    addToCart(foodName, priceVal, foodImg);
-                }
-            }
+            const imgEl = box?.querySelector('img');
+            const img = imgEl ? imgEl.getAttribute('src') : 'assets/images/loader.gif';
+            
+            const displayName = brand ? `${name} [${brand}]` : name;
+            addToCart(displayName, price, img);
         });
     });
 };
