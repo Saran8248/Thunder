@@ -72,7 +72,7 @@ document.querySelector('#profile-trigger')?.addEventListener('click', (e) => {
     document.querySelector('#profile-dropdown')?.classList.toggle('active');
 });
 
-// Close profile dropdown when clicking outside
+// Close profile and time dropdown when clicking outside
 document.addEventListener('click', (e) => {
     const profileDropdown = document.querySelector('#profile-dropdown');
     const profileTrigger = document.querySelector('#profile-trigger');
@@ -81,7 +81,42 @@ document.addEventListener('click', (e) => {
     if (profileDropdown && !profileDropdown.contains(e.target) && !profileTrigger?.contains(e.target) && !signinTrigger?.contains(e.target)) {
         profileDropdown.classList.remove('active');
     }
+
+    const timeDropdown = document.querySelector('#delivery-time-dropdown');
+    const timeTrigger = document.querySelector('#delivery-time-trigger');
+    if (timeDropdown && !timeDropdown.contains(e.target) && !timeTrigger?.contains(e.target)) {
+        timeDropdown.classList.remove('active');
+        const chevron = document.querySelector('#delivery-time-chevron');
+        if (chevron) chevron.style.transform = 'rotate(0deg)';
+    }
 });
+
+// --- Delivery Time Selection Logic ---
+const timeTrigger = document.querySelector('#delivery-time-trigger');
+const timeDropdown = document.querySelector('#delivery-time-dropdown');
+const timeChevron = document.querySelector('#delivery-time-chevron');
+
+timeTrigger?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isActive = timeDropdown?.classList.toggle('active');
+    if (timeChevron) {
+        timeChevron.style.transform = isActive ? 'rotate(180deg)' : 'rotate(0deg)';
+    }
+});
+
+const timeItems = document.querySelectorAll('#delivery-time-dropdown ul li');
+timeItems.forEach(item => {
+    item.addEventListener('click', () => {
+        const timeVal = item.getAttribute('data-time');
+        if (timeTrigger) {
+            timeTrigger.innerHTML = `${timeVal} <i class="fas fa-chevron-down" id="delivery-time-chevron"></i>`;
+        }
+        timeDropdown?.classList.remove('active');
+        const chevron = document.querySelector('#delivery-time-chevron');
+        if (chevron) chevron.style.transform = 'rotate(0deg)';
+    });
+});
+
 
 // --- Location Selector Logic ---
 const locations = document.querySelectorAll('.location-list li');

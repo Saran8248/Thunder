@@ -25,9 +25,19 @@
                 <i class="fas fa-chevron-down arrow-down"></i>
             </div>
 
-            <div class="delivery-toggle">
-                <span class="toggle-btn delivery-active"><i class="fas fa-motorcycle"></i> Delivery</span>
-                <span class="toggle-btn delivery-time">Now <i class="fas fa-chevron-down"></i></span>
+            <div class="delivery-toggle" id="delivery-toggle-container">
+                <span class="toggle-btn delivery-active" id="delivery-active-btn"><i class="fas fa-motorcycle"></i> Delivery</span>
+                <span class="toggle-btn delivery-time" id="delivery-time-trigger">Now <i class="fas fa-chevron-down" id="delivery-time-chevron"></i></span>
+                
+                <!-- Time Selection Dropdown -->
+                <div class="time-dropdown-menu" id="delivery-time-dropdown">
+                    <ul>
+                        <li data-time="Now"><i class="fas fa-shipping-fast"></i> Now</li>
+                        <li data-time="In 30 mins"><i class="far fa-clock"></i> In 30 mins</li>
+                        <li data-time="In 1 hour"><i class="far fa-clock"></i> In 1 hour</li>
+                        <li data-time="Later today"><i class="far fa-calendar-alt"></i> Later today</li>
+                    </ul>
+                </div>
             </div>
         </div>
 

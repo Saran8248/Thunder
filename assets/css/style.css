@@ -829,35 +829,93 @@ header .navbar a:hover {
 .delivery-toggle {
     display: flex;
     align-items: center;
-    gap: 4px;
-    background: #f1f2f6;
-    padding: 4px;
-    border-radius: 25px;
+    background: #edf2f6;
+    padding: 3px;
+    border-radius: 30px;
     margin-left: 20px;
-    border: 1px solid #dfe4ea;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    position: relative;
 }
 
 .delivery-toggle .toggle-btn {
-    padding: 6px 14px;
-    font-size: 1.2rem;
+    padding: 8px 18px;
+    font-size: 1.3rem;
     font-weight: 700;
-    border-radius: 20px;
+    border-radius: 25px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .delivery-toggle .delivery-active {
     background: #ffffff;
     color: #ff3838;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
 }
 
 .delivery-toggle .delivery-time {
-    color: #747d8c;
+    color: #5e6e7f;
+}
+
+.delivery-toggle .delivery-time i {
+    font-size: 1rem;
+    color: #5e6e7f;
+    transition: transform 0.3s ease;
+}
+
+/* Time Selection Dropdown */
+.time-dropdown-menu {
+    position: absolute;
+    top: 45px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.9);
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    border: 1px solid #f1f2f6;
+    width: 180px;
+    z-index: 1000;
+    display: none;
+    opacity: 0;
+    transition: all 0.3s ease;
+    padding: 8px 0;
+}
+
+.time-dropdown-menu.active {
+    display: block;
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+}
+
+.time-dropdown-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.time-dropdown-menu ul li {
+    padding: 12px 18px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #2f3542;
+    cursor: pointer;
+    transition: all 0.2s ease;
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 8px;
 }
+
+.time-dropdown-menu ul li:hover {
+    background: #fff0f0;
+    color: #ff3838;
+}
+
+.time-dropdown-menu ul li i {
+    color: #ff3838;
+}
+
 
 .header-right {
     display: flex;
