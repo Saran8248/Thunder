@@ -48,6 +48,41 @@
                         <button id="reset-schedule-btn" class="btn0" style="width: 100%; margin-top: 8px; padding: 8px 12px; background-color: #747d8c; border-color: #747d8c; font-size: 1.3rem;">Reset</button>
                     </div>
                 </div>
+
+                <div class="delivery-toggle credit-toggle" id="header-credit-container" style="margin-left: 12px; position: relative;">
+                    <span class="toggle-btn" id="header-credit-trigger" style="display: flex; align-items: center; gap: 6px; padding: 8px 12px; cursor: pointer;">
+                        <i class="fas fa-wallet" style="font-size: 1.5rem; color: #2ed573;"></i>
+                        <span style="font-size: 1.3rem; font-weight: 800; color: #2f3542; text-transform: none;">Credits: <span id="header-credit-balance" style="color: #2ed573;">₹3000</span></span>
+                        <i class="fas fa-chevron-down" id="credit-chevron" style="font-size: 1rem; color: #747d8c; margin-left: 4px;"></i>
+                    </span>
+
+                    <!-- Credits Info Dropdown -->
+                    <div class="credit-dropdown-menu" id="credit-info-dropdown" style="position: absolute; top: 45px; right: 0; background: #ffffff; padding: 15px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.12); width: 260px; display: none; z-index: 1100; border: 1px solid #f1f2f6;">
+                        <p style="font-size: 1.4rem; font-weight: 800; color: #2f3542; margin-bottom: 5px; text-transform: none;">Tasty Credit Line</p>
+                        <div style="display: flex; justify-content: space-between; font-size: 1.3rem; color: #57606f; margin-bottom: 10px; border-bottom: 1px solid #f1f2f6; padding-bottom: 8px;">
+                            <span>Available Limit:</span>
+                            <span id="popup-credit-balance" style="font-weight: 800; color: #2ed573;">₹3000</span>
+                        </div>
+                        
+                        <div id="credit-repay-section" style="display: none;">
+                            <p style="font-size: 1.2rem; font-weight: 700; color: #ff3838; margin-bottom: 4px;"><i class="fas fa-exclamation-circle"></i> Outstanding Repayment</p>
+                            <div style="font-size: 1.2rem; color: #57606f; margin-bottom: 8px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 3px;">
+                                    <span>Repay Amount:</span>
+                                    <span id="repay-amount-val" style="font-weight: 700; color: #2f3542;">₹0</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span>Due Date:</span>
+                                    <span id="repay-date-val" style="font-weight: 700; color: #2f3542;">-</span>
+                                </div>
+                            </div>
+                            <button id="repay-now-btn" class="btn0" style="width: 100%; font-size: 1.2rem; padding: 8px; background-color: #2ed573; border-color: #2ed573; margin-top: 5px;">Repay Full Amount</button>
+                        </div>
+                        <div id="credit-no-repay-msg" style="font-size: 1.2rem; color: #747d8c; text-align: center; padding: 5px 0;">
+                            No outstanding repayments.
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="header-right">
@@ -735,18 +770,33 @@
                          <button id="apply-coupon-btn" class="apply-btn">Apply</button>
                      </div>
                  </div>
+                  <!-- Credit Option checkbox -->
+                  <div class="cart-credit-toggle-wrapper" id="cart-credit-toggle-container" style="display: none; align-items: center; gap: 8px; margin-bottom: 12px; padding: 10px; background: #f6f8fa; border-radius: 8px; border: 1px solid #dfe4ea; text-align: left;">
+                      <input type="checkbox" id="use-credit-checkbox" style="width: 18px; height: 18px; cursor: pointer;">
+                      <label for="use-credit-checkbox" style="font-size: 1.2rem; font-weight: 700; color: #2f3542; cursor: pointer; text-transform: none;">
+                          Use Tasty Credit (Pay 50% now, repay later with 5% interest fee)
+                      </label>
+                  </div>
 
-                 <!-- Price Breakdown -->
-                 <div class="cart-summary-breakdown" style="font-size: 1.3rem; color: #57606f; margin-bottom: 12px; display: none;" id="cart-price-breakdown">
-                     <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-                         <span>Subtotal:</span>
-                         <span id="cart-subtotal-price">₹0</span>
-                     </div>
-                     <div style="display: flex; justify-content: space-between; margin-bottom: 6px; color: #2ed573; font-weight: 700;">
-                         <span>Discount (25% OFF):</span>
-                         <span id="cart-discount-price">-₹0</span>
-                     </div>
-                 </div>
+                  <!-- Price Breakdown -->
+                  <div class="cart-summary-breakdown" style="font-size: 1.3rem; color: #57606f; margin-bottom: 12px; display: none;" id="cart-price-breakdown">
+                      <div style="display: flex; justify-content: space-between; margin-bottom: 6px;" id="breakdown-subtotal-row">
+                          <span>Subtotal:</span>
+                          <span id="cart-subtotal-price">₹0</span>
+                      </div>
+                      <div style="display: flex; justify-content: space-between; margin-bottom: 6px; color: #2ed573; font-weight: 700;" id="breakdown-discount-row">
+                          <span>Discount (25% OFF):</span>
+                          <span id="cart-discount-price">-₹0</span>
+                      </div>
+                      <div style="display: flex; justify-content: space-between; margin-bottom: 6px; color: #ffa502; font-weight: 700; display: none;" id="breakdown-credit-row">
+                          <span>Tasty Credit Used (50%):</span>
+                          <span id="cart-credit-used-price">-₹0</span>
+                      </div>
+                      <div style="display: flex; justify-content: space-between; margin-bottom: 6px; color: #ff3838; font-weight: 700; display: none;" id="breakdown-repay-row">
+                          <span>Repayment Due (in 1 week):</span>
+                          <span id="cart-repay-due-price">₹0</span>
+                      </div>
+                  </div>
 
                  <div class="cart-summary">
                      <span>Total Amount:</span>

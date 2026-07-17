@@ -1,3 +1,9 @@
+// --- Credit State Variables ---
+let creditBalance = 3000;
+let creditLoanUsed = 0;
+let creditLoanRepayAmount = 0;
+let creditLoanDueDate = null;
+
 // Loader fadeout
 function loader() {
     const loaderContainer = document.querySelector('.loader-container');
@@ -86,6 +92,14 @@ document.addEventListener('click', (e) => {
     if (schedulePopover && !schedulePopover.contains(e.target) && !timeTrigger?.contains(e.target) && !timeDropdown?.contains(e.target)) {
         schedulePopover.classList.remove('active');
     }
+
+    const creditDropdown = document.querySelector('#credit-info-dropdown');
+    const creditTrigger = document.querySelector('#header-credit-trigger');
+    if (creditDropdown && !creditDropdown.contains(e.target) && !creditTrigger?.contains(e.target)) {
+        creditDropdown.style.display = 'none';
+        const chevron = document.querySelector('#credit-chevron');
+        if (chevron) chevron.style.transform = 'rotate(0deg)';
+    }
 });
 
 // --- Delivery Time Selection Logic ---
@@ -124,6 +138,58 @@ document.querySelector('#dropdown-schedule-trigger')?.addEventListener('click', 
     
     // Open the schedule calendar popover directly
     schedulePopover?.classList.add('active');
+});
+
+
+// --- Credit System Logic ---
+const creditTrigger = document.querySelector('#header-credit-trigger');
+const creditDropdown = document.querySelector('#credit-info-dropdown');
+const creditChevron = document.querySelector('#credit-chevron');
+const repayNowBtn = document.querySelector('#repay-now-btn');
+
+creditTrigger?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isShowing = creditDropdown.style.display === 'block';
+    creditDropdown.style.display = isShowing ? 'none' : 'block';
+    if (creditChevron) {
+        creditChevron.style.transform = isShowing ? 'rotate(0deg)' : 'rotate(180deg)';
+    }
+});
+
+const updateCreditUI = () => {
+    const balanceSpan = document.querySelector('#header-credit-balance');
+    const popupBalanceSpan = document.querySelector('#popup-credit-balance');
+    const repaySection = document.querySelector('#credit-repay-section');
+    const noRepayMsg = document.querySelector('#credit-no-repay-msg');
+    const repayAmountVal = document.querySelector('#repay-amount-val');
+    const repayDateVal = document.querySelector('#repay-date-val');
+    
+    if (balanceSpan) balanceSpan.textContent = `₹${creditBalance}`;
+    if (popupBalanceSpan) popupBalanceSpan.textContent = `₹${creditBalance}`;
+    
+    if (creditLoanRepayAmount > 0) {
+        if (repaySection) repaySection.style.display = 'block';
+        if (noRepayMsg) noRepayMsg.style.display = 'none';
+        if (repayAmountVal) repayAmountVal.textContent = `₹${creditLoanRepayAmount}`;
+        if (repayDateVal && creditLoanDueDate) {
+            repayDateVal.textContent = creditLoanDueDate;
+        }
+    } else {
+        if (repaySection) repaySection.style.display = 'none';
+        if (noRepayMsg) noRepayMsg.style.display = 'block';
+    }
+};
+
+repayNowBtn?.addEventListener('click', () => {
+    creditBalance = 3000;
+    creditLoanUsed = 0;
+    creditLoanRepayAmount = 0;
+    creditLoanDueDate = null;
+    
+    updateCreditUI();
+    updateCartUI();
+    
+    alert('Repayment successful! Your credit limit has been fully restored.');
 });
 
 
@@ -440,6 +506,11 @@ const updateCartUI = () => {
             </div>
         `;
         if (couponSection) couponSection.style.display = 'none';
+        const cartCreditContainer = document.querySelector('#cart-credit-toggle-container');
+        if (cartCreditContainer) cartCreditContainer.style.display = 'none';
+        const useCreditCheckbox = document.querySelector('#use-credit-checkbox');
+        if (useCreditCheckbox) useCreditCheckbox.checked = false;
+        
         if (priceBreakdown) priceBreakdown.style.display = 'none';
         if (cartTotalEl) cartTotalEl.textContent = '₹0';
         return;
@@ -475,18 +546,77 @@ const updateCartUI = () => {
         couponSection.style.display = 'block';
     }
     
-    // Apply discount calculations
+    // Show credit toggle checkbox container in cart
+    const cartCreditContainer = document.querySelector('#cart-credit-toggle-container');
+    const useCreditCheckbox = document.querySelector('#use-credit-checkbox');
+    if (cartCreditContainer) {
+        cartCreditContainer.style.display = 'flex';
+    }
+    
+    const isCreditChecked = useCreditCheckbox ? useCreditCheckbox.checked : false;
+    
+    let discountAmt = 0;
     if (couponApplied) {
-        const discountAmt = Math.round(totalAmt * 0.25);
-        const finalAmt = totalAmt - discountAmt;
+        discountAmt = Math.round(totalAmt * 0.25);
+    }
+    
+    const billAfterDiscount = totalAmt - discountAmt;
+    let finalPayNow = billAfterDiscount;
+    let creditUsed = 0;
+    let repayDue = 0;
+    
+    if (isCreditChecked) {
+        // Limit credit use up to available credit balance
+        const possibleCredit = Math.round(billAfterDiscount * 0.5);
+        if (possibleCredit <= creditBalance) {
+            creditUsed = possibleCredit;
+        } else {
+            creditUsed = creditBalance;
+        }
         
-        if (priceBreakdown) priceBreakdown.style.display = 'block';
-        if (subtotalEl) subtotalEl.textContent = `₹${totalAmt}`;
+        finalPayNow = billAfterDiscount - creditUsed;
+        // Repay with 5% food total bill amount interest fee
+        repayDue = creditUsed + Math.round(billAfterDiscount * 0.05);
+    }
+    
+    // Manage Price Breakdown Row Displays
+    const discountRow = document.querySelector('#breakdown-discount-row');
+    const creditRow = document.querySelector('#breakdown-credit-row');
+    const repayRow = document.querySelector('#breakdown-repay-row');
+    
+    if (subtotalEl) subtotalEl.textContent = `₹${totalAmt}`;
+    
+    if (couponApplied) {
+        if (discountRow) discountRow.style.display = 'flex';
         if (discountEl) discountEl.textContent = `-₹${discountAmt}`;
-        if (cartTotalEl) cartTotalEl.textContent = `₹${finalAmt}`;
     } else {
-        if (priceBreakdown) priceBreakdown.style.display = 'none';
-        if (cartTotalEl) cartTotalEl.textContent = `₹${totalAmt}`;
+        if (discountRow) discountRow.style.display = 'none';
+    }
+    
+    if (isCreditChecked && creditUsed > 0) {
+        if (creditRow) creditRow.style.display = 'flex';
+        const creditUsedEl = document.querySelector('#cart-credit-used-price');
+        if (creditUsedEl) creditUsedEl.textContent = `-₹${creditUsed}`;
+        
+        if (repayRow) repayRow.style.display = 'flex';
+        const repayDueEl = document.querySelector('#cart-repay-due-price');
+        if (repayDueEl) repayDueEl.textContent = `₹${repayDue}`;
+    } else {
+        if (creditRow) creditRow.style.display = 'none';
+        if (repayRow) repayRow.style.display = 'none';
+    }
+    
+    // Show breakdown panel if either discount is applied or credit is selected
+    if (priceBreakdown) {
+        if (couponApplied || (isCreditChecked && creditUsed > 0)) {
+            priceBreakdown.style.display = 'block';
+        } else {
+            priceBreakdown.style.display = 'none';
+        }
+    }
+    
+    if (cartTotalEl) {
+        cartTotalEl.textContent = `₹${finalPayNow}`;
     }
     
     // Quantity minus click adjustment
@@ -731,9 +861,40 @@ document.querySelector('#profile-orders-btn')?.addEventListener('click', () => {
 document.querySelector('#cart-checkout-btn')?.addEventListener('click', () => {
     if (cart.length === 0) return;
     
-    // Clear cart
+    const useCreditCheckbox = document.querySelector('#use-credit-checkbox');
+    const isCreditChecked = useCreditCheckbox ? useCreditCheckbox.checked : false;
+    
+    if (isCreditChecked) {
+        const totalAmt = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+        let discountAmt = 0;
+        if (couponApplied) {
+            discountAmt = Math.round(totalAmt * 0.25);
+        }
+        const billAfterDiscount = totalAmt - discountAmt;
+        let creditUsed = Math.round(billAfterDiscount * 0.5);
+        if (creditUsed > creditBalance) {
+            creditUsed = creditBalance;
+        }
+        
+        if (creditUsed > 0) {
+            creditBalance -= creditUsed;
+            creditLoanUsed += creditUsed;
+            creditLoanRepayAmount += creditUsed + Math.round(billAfterDiscount * 0.05);
+            
+            // Repay due in exactly 1 week
+            const due = new Date();
+            due.setDate(due.getDate() + 7);
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            creditLoanDueDate = `${due.getDate()} ${months[due.getMonth()]} ${due.getFullYear()}`;
+        }
+    }
+    
+    // Clear cart and uncheck checkbox
     cart = [];
+    if (useCreditCheckbox) useCreditCheckbox.checked = false;
+    
     updateCartUI();
+    updateCreditUI();
     
     // Close drawer
     toggleModal('cart-drawer', 'close');
@@ -746,6 +907,11 @@ document.querySelector('#cart-checkout-btn')?.addEventListener('click', () => {
 });
 
 // Original order form success model wiring remains functional
+// Checkbox change listener to recalculate prices dynamically
+document.querySelector('#use-credit-checkbox')?.addEventListener('change', () => {
+    updateCartUI();
+});
+
 const orderForm = document.querySelector('#order-form');
 const successModal = document.querySelector('#order-success-modal');
 const closeModalBtn = document.querySelector('#close-modal-btn');
