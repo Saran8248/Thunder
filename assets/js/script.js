@@ -118,8 +118,10 @@ timeTrigger?.addEventListener('click', (e) => {
 
 const timeItems = document.querySelectorAll('#delivery-time-dropdown ul li');
 timeItems.forEach(item => {
-    item.addEventListener('click', () => {
+    item.addEventListener('click', (e) => {
         const timeVal = item.getAttribute('data-time');
+        if (!timeVal) return; // Skip schedule trigger item here
+        
         if (timeTrigger) {
             timeTrigger.innerHTML = `${timeVal} <i class="fas fa-chevron-down" id="delivery-time-chevron"></i>`;
         }
@@ -127,6 +129,18 @@ timeItems.forEach(item => {
         if (timeChevron) timeChevron.style.transform = 'rotate(0deg)';
     });
 });
+
+// Dropdown schedule selection links straight to the calendar popover
+document.querySelector('#dropdown-schedule-trigger')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    timeDropdown?.classList.remove('active');
+    if (timeChevron) timeChevron.style.transform = 'rotate(0deg)';
+    
+    // Open the schedule calendar popover directly
+    schedulePopover?.classList.add('active');
+    if (scheduleChevron) scheduleChevron.style.transform = 'rotate(180deg)';
+});
+
 
 // --- Schedule Time Delivery Logic ---
 const scheduleTrigger = document.querySelector('#schedule-date-trigger');
