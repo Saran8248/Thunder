@@ -171,6 +171,20 @@ confirmScheduleBtn?.addEventListener('click', () => {
     if (scheduleChevron) scheduleChevron.style.transform = 'rotate(0deg)';
 });
 
+document.querySelector('#reset-schedule-btn')?.addEventListener('click', () => {
+    if (scheduleDatetimeInput) {
+        scheduleDatetimeInput.value = '';
+    }
+    if (scheduleTrigger) {
+        scheduleTrigger.innerHTML = `<i class="far fa-calendar-alt"></i> Schedule <i class="fas fa-chevron-down" id="schedule-chevron" style="font-size: 1rem; margin-left: 4px; color: #5e6e7f;"></i>`;
+        scheduleTrigger.style.color = '';
+    }
+    schedulePopover?.classList.remove('active');
+    if (scheduleChevron) {
+        scheduleChevron.style.transform = 'rotate(0deg)';
+    }
+});
+
 // --- Location Selector Logic ---
 const locations = document.querySelectorAll('.location-list li');
 locations.forEach(item => {
