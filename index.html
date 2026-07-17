@@ -13,9 +13,9 @@
         :root {
             --primary: #ff3838;
             --dark: #0f172a;
-            --dark-card: #1e293b;
-            --text-main: #f8fafc;
-            --text-sub: #94a3b8;
+            --dark-card: #ffffff;
+            --text-main: #2f3542;
+            --text-sub: #57606f;
         }
 
         * {
@@ -26,7 +26,7 @@
         }
 
         body {
-            background: radial-gradient(circle at top left, #1e1b4b, var(--dark) 70%);
+            background: #f7f7f7;
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
@@ -75,8 +75,8 @@
         }
 
         .portal-card {
-            background: rgba(30, 41, 59, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: var(--dark-card);
+            border: 1px solid #dfe4ea;
             border-radius: 20px;
             padding: 40px 30px;
             text-decoration: none;
@@ -88,7 +88,7 @@
             align-items: center;
             position: relative;
             overflow: hidden;
-            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
         }
 
         .portal-card::before {
@@ -109,8 +109,8 @@
 
         .portal-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border-color: rgba(0, 0, 0, 0.08);
         }
 
         .portal-card:hover::before {
