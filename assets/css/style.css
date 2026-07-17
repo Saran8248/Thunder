@@ -1996,3 +1996,256 @@ header .navbar a:hover {
         font-size: 1.8rem;
     }
 }
+
+/* --- Schedule Delivery Toggle & Popover --- */
+.schedule-delivery-toggle {
+    cursor: pointer;
+}
+
+.schedule-popover {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.95);
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    width: 250px;
+    display: none;
+    z-index: 1100;
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border: 1px solid #f1f2f6;
+}
+
+.schedule-popover.active {
+    display: block;
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+}
+
+/* --- Food Categories Section ("Order our best food options") --- */
+.food-categories-section {
+    padding: 3rem 9% 2rem 9%;
+    background: #ffffff;
+    border-bottom: 1px solid #f1f2f6;
+}
+
+.categories-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #2f3542;
+}
+
+.categories-arrows {
+    display: flex;
+    gap: 10px;
+}
+
+.categories-arrows .arrow-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: #f1f2f6;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    color: #57606f;
+    transition: all 0.2s ease;
+}
+
+.categories-arrows .arrow-btn:hover {
+    background: #ff3838;
+    color: #ffffff;
+}
+
+.categories-slider-wrapper {
+    display: flex;
+    gap: 35px;
+    overflow-x: auto;
+    padding: 15px 5px;
+    scroll-behavior: smooth;
+    scrollbar-width: none; /* Firefox */
+}
+
+.categories-slider-wrapper::-webkit-scrollbar {
+    display: none; /* Safari, Chrome, Opera */
+}
+
+.category-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    text-align: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    min-width: 90px;
+}
+
+.category-circle {
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #fafafa;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.category-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.category-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #57606f;
+    transition: color 0.3s ease;
+}
+
+/* Category Hover & Active States */
+.category-card:hover .category-circle,
+.category-card.active .category-circle {
+    transform: translateY(-4px) scale(1.06);
+    border-color: #ff3838;
+    box-shadow: 0 8px 20px rgba(255, 56, 56, 0.15);
+}
+
+.category-card.active .category-name {
+    color: #ff3838;
+}
+
+/* --- Cart Coupon System --- */
+.coupon-box {
+    display: flex;
+    align-items: center;
+    background: #fff9f9;
+    border: 1px dashed #ff3838;
+    padding: 12px 15px;
+    border-radius: 8px;
+    gap: 12px;
+}
+
+.coupon-icon {
+    font-size: 2.2rem;
+    color: #ff3838;
+}
+
+.coupon-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.coupon-title {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #2f3542;
+    letter-spacing: 0.5px;
+}
+
+.coupon-desc {
+    font-size: 1.1rem;
+    color: #747d8c;
+    text-transform: none;
+}
+
+.apply-btn {
+    background: #ff3838;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 1.2rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.apply-btn:hover {
+    background: #e02f2f;
+}
+
+.apply-btn.applied {
+    background: #2ed573;
+    cursor: default;
+}
+
+/* --- Profile Modal Input Fields Layout --- */
+.profile-modal-content {
+    max-width: 520px;
+    width: 90%;
+    border-radius: 16px;
+    padding: 35px 25px;
+    position: relative;
+}
+
+.profile-input-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.address-input-wrapper {
+    display: flex;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.address-input-wrapper input {
+    flex: 1;
+    padding: 11px;
+    font-size: 1.4rem;
+    border: 1px solid #dfe4ea;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.3s ease;
+    text-transform: none;
+}
+
+.address-input-wrapper input:focus {
+    border-color: #ff3838;
+}
+
+.address-input-wrapper .detect-btn {
+    background: #f1f2f6;
+    color: #ff3838;
+    border: 1px solid #dfe4ea;
+    padding: 0 15px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.address-input-wrapper .detect-btn:hover {
+    background: #ff3838;
+    color: #ffffff;
+    border-color: #ff3838;
+}
+
+@media (max-width: 500px) {
+    .profile-input-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    .address-input-wrapper {
+        flex-direction: column;
+    }
+    .address-input-wrapper .detect-btn {
+        padding: 10px;
+        justify-content: center;
+    }
+}
