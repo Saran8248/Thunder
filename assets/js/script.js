@@ -83,11 +83,8 @@ document.addEventListener('click', (e) => {
     }
 
     const schedulePopover = document.querySelector('#schedule-popover');
-    const scheduleTrigger = document.querySelector('#schedule-date-trigger');
-    if (schedulePopover && !schedulePopover.contains(e.target) && !scheduleTrigger?.contains(e.target)) {
+    if (schedulePopover && !schedulePopover.contains(e.target) && !timeTrigger?.contains(e.target) && !timeDropdown?.contains(e.target)) {
         schedulePopover.classList.remove('active');
-        const chevron = document.querySelector('#schedule-chevron');
-        if (chevron) chevron.style.transform = 'rotate(0deg)';
     }
 });
 
@@ -95,6 +92,7 @@ document.addEventListener('click', (e) => {
 const timeTrigger = document.querySelector('#delivery-time-trigger');
 const timeDropdown = document.querySelector('#delivery-time-dropdown');
 const timeChevron = document.querySelector('#delivery-time-chevron');
+const schedulePopover = document.querySelector('#schedule-popover');
 
 timeTrigger?.addEventListener('click', (e) => {
     e.stopPropagation();
@@ -126,24 +124,12 @@ document.querySelector('#dropdown-schedule-trigger')?.addEventListener('click', 
     
     // Open the schedule calendar popover directly
     schedulePopover?.classList.add('active');
-    if (scheduleChevron) scheduleChevron.style.transform = 'rotate(180deg)';
 });
 
 
 // --- Schedule Time Delivery Logic ---
-const scheduleTrigger = document.querySelector('#schedule-date-trigger');
-const schedulePopover = document.querySelector('#schedule-popover');
-const scheduleChevron = document.querySelector('#schedule-chevron');
 const confirmScheduleBtn = document.querySelector('#confirm-schedule-btn');
 const scheduleDatetimeInput = document.querySelector('#schedule-datetime');
-
-scheduleTrigger?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const isActive = schedulePopover?.classList.toggle('active');
-    if (scheduleChevron) {
-        scheduleChevron.style.transform = isActive ? 'rotate(180deg)' : 'rotate(0deg)';
-    }
-});
 
 confirmScheduleBtn?.addEventListener('click', () => {
     const val = scheduleDatetimeInput?.value;
@@ -161,30 +147,26 @@ confirmScheduleBtn?.addEventListener('click', () => {
     const minutes = dateObj.getMinutes().toString().padStart(2, '0');
     const ampm = hours >= 12 ? 'PM' : 'AM';
     hours = hours % 12;
-    hours = hours ? hours : 12; // hour 0 is 12
+    hours = hours ? hours : 12;
     const formatted = `${month} ${day}, ${hours}:${minutes} ${ampm}`;
     
-    if (scheduleTrigger) {
-        scheduleTrigger.innerHTML = `<i class="far fa-calendar-alt"></i> Scheduled: ${formatted} <i class="fas fa-chevron-down" id="schedule-chevron" style="font-size: 1rem; margin-left: 4px; color: #ff3838;"></i>`;
-        scheduleTrigger.style.color = '#ff3838';
+    if (timeTrigger) {
+        timeTrigger.innerHTML = `${formatted} <i class="fas fa-chevron-down" id="delivery-time-chevron" style="color: #ff3838;"></i>`;
+        timeTrigger.style.color = '#ff3838';
     }
     
     schedulePopover?.classList.remove('active');
-    if (scheduleChevron) scheduleChevron.style.transform = 'rotate(0deg)';
 });
 
 document.querySelector('#reset-schedule-btn')?.addEventListener('click', () => {
     if (scheduleDatetimeInput) {
         scheduleDatetimeInput.value = '';
     }
-    if (scheduleTrigger) {
-        scheduleTrigger.innerHTML = `<i class="far fa-calendar-alt"></i> Schedule <i class="fas fa-chevron-down" id="schedule-chevron" style="font-size: 1rem; margin-left: 4px; color: #5e6e7f;"></i>`;
-        scheduleTrigger.style.color = '';
+    if (timeTrigger) {
+        timeTrigger.innerHTML = `Now <i class="fas fa-chevron-down" id="delivery-time-chevron"></i>`;
+        timeTrigger.style.color = '';
     }
     schedulePopover?.classList.remove('active');
-    if (scheduleChevron) {
-        scheduleChevron.style.transform = 'rotate(0deg)';
-    }
 });
 
 // --- Location Selector Logic ---
