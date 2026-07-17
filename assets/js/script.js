@@ -39,9 +39,7 @@ const toggleModal = (modalId, action) => {
     }
 };
 
-// Search Overlay Trigger
-document.querySelector('#search-trigger')?.addEventListener('click', () => toggleModal('search-overlay', 'open'));
-document.querySelector('#close-search-btn')?.addEventListener('click', () => toggleModal('search-overlay', 'close'));
+
 
 // Cart Drawer Trigger
 document.querySelector('#cart-trigger')?.addEventListener('click', () => toggleModal('cart-drawer', 'open'));
@@ -355,42 +353,59 @@ const getFoodItemsIndex = () => {
     return items;
 };
 
-const searchInput = document.querySelector('#search-input');
-const searchResults = document.querySelector('#search-results');
+const mainSearchInput = document.querySelector('#main-search-input');
+const mainSearchResults = document.querySelector('#main-search-results');
+const clearSearchBtn = document.querySelector('#clear-search-btn');
 
-searchInput?.addEventListener('input', () => {
-    const query = searchInput.value.toLowerCase().trim();
-    if (!searchResults) return;
+mainSearchInput?.addEventListener('input', () => {
+    const query = mainSearchInput.value.toLowerCase().trim();
+    if (!mainSearchResults) return;
     
     if (query.length === 0) {
-        searchResults.innerHTML = '';
+        mainSearchResults.innerHTML = '';
+        mainSearchResults.classList.remove('active');
+        if (clearSearchBtn) clearSearchBtn.style.display = 'none';
         return;
     }
+    
+    if (clearSearchBtn) clearSearchBtn.style.display = 'block';
     
     const items = getFoodItemsIndex();
     const matches = items.filter(item => item.name.toLowerCase().includes(query));
     
-    searchResults.innerHTML = '';
+    mainSearchResults.innerHTML = '';
+    mainSearchResults.classList.add('active');
     
     if (matches.length === 0) {
-        searchResults.innerHTML = '<div style="padding: 15px; font-size: 1.5rem; text-align: center; color: #747d8c;">No dishes found. Try searching for burger, pizza, wrap, or biryani...</div>';
+        mainSearchResults.innerHTML = '<div style="padding: 15px; font-size: 1.4rem; text-align: center; color: #747d8c;">No dishes found. Try searching for burger, pizza, wrap, or biryani...</div>';
         return;
     }
     
     matches.forEach(match => {
         const itemDiv = document.createElement('div');
         itemDiv.className = 'search-result-item';
+        itemDiv.style.display = 'flex';
+        itemDiv.style.alignItems = 'center';
+        itemDiv.style.padding = '10px 15px';
+        itemDiv.style.gap = '12px';
+        itemDiv.style.cursor = 'pointer';
+        itemDiv.style.borderBottom = '1px solid #f1f2f6';
+        itemDiv.style.transition = 'background 0.2s ease';
+        
         itemDiv.innerHTML = `
-            <img src="${match.img}" alt="${match.name}">
-            <div class="search-result-info">
-                <div class="search-result-title">${match.name}</div>
-                <div class="search-result-price">${match.priceText}</div>
+            <img src="${match.img}" alt="${match.name}" style="width: 45px; height: 45px; border-radius: 6px; object-fit: cover;">
+            <div class="search-result-info" style="flex: 1;">
+                <div class="search-result-title" style="font-size: 1.4rem; font-weight: 700; color: #2f3542; text-transform: none;">${match.name}</div>
+                <div class="search-result-price" style="font-size: 1.2rem; color: #747d8c; margin-top: 2px;">${match.priceText}</div>
             </div>
-            <i class="fas fa-chevron-right" style="color: #ff3838; font-size: 1.5rem;"></i>
+            <i class="fas fa-chevron-right" style="color: #ff3838; font-size: 1.3rem;"></i>
         `;
         
         itemDiv.addEventListener('click', () => {
-            toggleModal('search-overlay', 'close');
+            mainSearchResults.classList.remove('active');
+            mainSearchInput.value = '';
+            if (clearSearchBtn) clearSearchBtn.style.display = 'none';
+            
             match.element.scrollIntoView({ behavior: 'smooth', block: 'center' });
             
             // Highlight result box
@@ -401,8 +416,28 @@ searchInput?.addEventListener('input', () => {
             }, 2000);
         });
         
-        searchResults.appendChild(itemDiv);
+        // Hover effect styling via JS
+        itemDiv.addEventListener('mouseenter', () => { itemDiv.style.background = '#f6f8fa'; });
+        itemDiv.addEventListener('mouseleave', () => { itemDiv.style.background = 'transparent'; });
+        
+        mainSearchResults.appendChild(itemDiv);
     });
+});
+
+clearSearchBtn?.addEventListener('click', () => {
+    if (mainSearchInput) mainSearchInput.value = '';
+    if (mainSearchResults) {
+        mainSearchResults.innerHTML = '';
+        mainSearchResults.classList.remove('active');
+    }
+    if (clearSearchBtn) clearSearchBtn.style.display = 'none';
+});
+
+// Close search dropdown on click outside
+document.addEventListener('click', (e) => {
+    if (mainSearchResults && !mainSearchResults.contains(e.target) && !mainSearchInput?.contains(e.target)) {
+        mainSearchResults.classList.remove('active');
+    }
 });
 
 // --- Dynamic Cart & Coupon Logic ---

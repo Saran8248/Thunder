@@ -13,85 +13,90 @@
 
 <body>
     <header class="eatsure-header">
-        <div class="header-left">
-            <a href="#" class="logo"><i class="fas fa-utensils"></i><span>Tasty Bites</span></a>
+        <div class="header-top">
+            <div class="header-left">
+                <a href="#" class="logo"><i class="fas fa-utensils"></i><span>Tasty Bites</span></a>
 
-            <div class="location-selector-btn" id="location-selector-trigger">
-                <i class="fas fa-map-marker-alt map-pin"></i>
-                <div class="location-text">
-                    <span class="main-loc" id="current-main-loc">Sector 4, 19th Main...</span>
-                    <span class="sub-loc" id="current-sub-loc">HSR Layout RK, Bengaluru</span>
+                <div class="location-selector-btn" id="location-selector-trigger">
+                    <i class="fas fa-map-marker-alt map-pin"></i>
+                    <div class="location-text">
+                        <span class="main-loc" id="current-main-loc">Sector 4, 19th Main...</span>
+                        <span class="sub-loc" id="current-sub-loc">HSR Layout RK, Bengaluru</span>
+                    </div>
+                    <i class="fas fa-chevron-down arrow-down"></i>
                 </div>
-                <i class="fas fa-chevron-down arrow-down"></i>
+
+                <div class="delivery-toggle" id="delivery-toggle-container">
+                    <span class="toggle-btn delivery-active" id="delivery-active-btn"><i class="fas fa-motorcycle"></i> Delivery</span>
+                    <span class="toggle-btn delivery-time" id="delivery-time-trigger">Now <i class="fas fa-chevron-down" id="delivery-time-chevron"></i></span>
+                    
+                    <!-- Time Selection Dropdown -->
+                    <div class="time-dropdown-menu" id="delivery-time-dropdown">
+                        <ul>
+                            <li data-time="Now"><i class="fas fa-shipping-fast"></i> Now</li>
+                            <li data-time="In 30 mins"><i class="far fa-clock"></i> In 30 mins</li>
+                            <li data-time="In 1 hour"><i class="far fa-clock"></i> In 1 hour</li>
+                            <li id="dropdown-schedule-trigger"><i class="far fa-calendar-alt"></i> Schedule Time & Date</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="delivery-toggle schedule-delivery-toggle" id="schedule-delivery-container" style="margin-left: 12px;">
+                    <span class="toggle-btn" id="schedule-date-trigger"><i class="far fa-calendar-alt"></i> Schedule <i class="fas fa-chevron-down" id="schedule-chevron" style="font-size: 1rem; margin-left: 4px; color: #5e6e7f;"></i></span>
+                    
+                    <!-- Calendar Input Popover -->
+                    <div class="schedule-popover" id="schedule-popover">
+                        <p style="font-size: 1.2rem; font-weight: 700; color: #2f3542; margin-bottom: 8px;">Select Date & Time</p>
+                        <input type="datetime-local" id="schedule-datetime" style="width: 100%; padding: 8px; font-size: 1.3rem; border: 1px solid #dfe4ea; border-radius: 6px; outline: none; margin-bottom: 10px;">
+                        <button id="confirm-schedule-btn" class="btn0" style="width: 100%; font-size: 1.3rem; padding: 8px 12px;">Confirm</button>
+                        <button id="reset-schedule-btn" class="btn0" style="width: 100%; margin-top: 8px; padding: 8px 12px; background-color: #747d8c; border-color: #747d8c; font-size: 1.3rem;">Reset</button>
+                    </div>
+                </div>
             </div>
 
-            <div class="delivery-toggle" id="delivery-toggle-container">
-                <span class="toggle-btn delivery-active" id="delivery-active-btn"><i class="fas fa-motorcycle"></i> Delivery</span>
-                <span class="toggle-btn delivery-time" id="delivery-time-trigger">Now <i class="fas fa-chevron-down" id="delivery-time-chevron"></i></span>
-                
-                <!-- Time Selection Dropdown -->
-                <div class="time-dropdown-menu" id="delivery-time-dropdown">
-                    <ul>
-                        <li data-time="Now"><i class="fas fa-shipping-fast"></i> Now</li>
-                        <li data-time="In 30 mins"><i class="far fa-clock"></i> In 30 mins</li>
-                        <li data-time="In 1 hour"><i class="far fa-clock"></i> In 1 hour</li>
-                        <li id="dropdown-schedule-trigger"><i class="far fa-calendar-alt"></i> Schedule Time & Date</li>
-                    </ul>
-                </div>
-            </div>
+            <div class="header-right">
+                <a href="tel:07304047007" class="header-action-item call-btn">
+                    <i class="fas fa-phone-alt"></i>
+                    <div class="action-text">
+                        <span class="label">Call us at</span>
+                        <span class="value">07304047007</span>
+                    </div>
+                </a>
 
-            <div class="delivery-toggle schedule-delivery-toggle" id="schedule-delivery-container" style="margin-left: 12px;">
-                <span class="toggle-btn" id="schedule-date-trigger"><i class="far fa-calendar-alt"></i> Schedule <i class="fas fa-chevron-down" id="schedule-chevron" style="font-size: 1rem; margin-left: 4px; color: #5e6e7f;"></i></span>
-                
-                <!-- Calendar Input Popover -->
-                <div class="schedule-popover" id="schedule-popover">
-                    <p style="font-size: 1.2rem; font-weight: 700; color: #2f3542; margin-bottom: 8px;">Select Date & Time</p>
-                    <input type="datetime-local" id="schedule-datetime" style="width: 100%; padding: 8px; font-size: 1.3rem; border: 1px solid #dfe4ea; border-radius: 6px; outline: none; margin-bottom: 10px;">
-                    <button id="confirm-schedule-btn" class="btn0" style="width: 100%; font-size: 1.3rem; padding: 8px 12px;">Confirm</button>
-                    <button id="reset-schedule-btn" class="btn0" style="width: 100%; margin-top: 8px; padding: 8px 12px; background-color: #747d8c; border-color: #747d8c; font-size: 1.3rem;">Reset</button>
+                <div class="header-action-item cart-trigger-btn" id="cart-trigger">
+                    <div class="cart-icon-wrapper">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-badge" id="cart-count">0</span>
+                    </div>
+                    <div class="action-text">
+                        <span class="single-label">Cart</span>
+                    </div>
+                </div>
+
+                <div class="header-action-item" id="signin-trigger">
+                    <i class="fas fa-user-circle" id="signin-icon"></i>
+                    <div class="action-text">
+                        <span class="single-label" id="signin-text">Sign In</span>
+                    </div>
+                </div>
+
+                <div class="header-action-item" id="profile-trigger">
+                    <i class="fas fa-bars"></i>
+                    <div class="action-text">
+                        <span class="single-label">My Profile</span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="header-right">
-            <a href="tel:07304047007" class="header-action-item call-btn">
-                <i class="fas fa-phone-alt"></i>
-                <div class="action-text">
-                    <span class="label">Call us at</span>
-                    <span class="value">07304047007</span>
-                </div>
-            </a>
-
-            <div class="header-action-item" id="search-trigger">
-                <i class="fas fa-search"></i>
-                <div class="action-text">
-                    <span class="single-label">Search</span>
-                </div>
+        <div class="header-bottom">
+            <div class="header-search-bar">
+                <i class="fas fa-search search-bar-icon"></i>
+                <input type="text" id="main-search-input" placeholder="Search for your favorite dishes (e.g. burger, pizza, ice-cream, wrap, biryani)...">
+                <i class="fas fa-times" id="clear-search-btn"></i>
             </div>
-
-            <div class="header-action-item cart-trigger-btn" id="cart-trigger">
-                <div class="cart-icon-wrapper">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-badge" id="cart-count">0</span>
-                </div>
-                <div class="action-text">
-                    <span class="single-label">Cart</span>
-                </div>
-            </div>
-
-            <div class="header-action-item" id="signin-trigger">
-                <i class="fas fa-user-circle" id="signin-icon"></i>
-                <div class="action-text">
-                    <span class="single-label" id="signin-text">Sign In</span>
-                </div>
-            </div>
-
-            <div class="header-action-item" id="profile-trigger">
-                <i class="fas fa-bars"></i>
-                <div class="action-text">
-                    <span class="single-label">My Profile</span>
-                </div>
-            </div>
+            <!-- Live Search Results Dropdown -->
+            <div id="main-search-results" class="main-search-results-dropdown"></div>
         </div>
     </header>
     <!-- Promo Banner Carousel Section -->
@@ -706,18 +711,6 @@
              <h2>Order Placed Successfully!</h2>
              <p>Thank you for choosing Tasty Bites. Your delicious meal is being prepared and will be delivered shortly.</p>
              <button id="close-modal-btn" class="btn0">Great!</button>
-         </div>
-     </div>
-
-     <!-- Search Overlay -->
-     <div id="search-overlay" class="overlay-container">
-         <div class="search-box">
-             <div class="search-input-wrapper">
-                 <i class="fas fa-search search-bar-icon"></i>
-                 <input type="text" id="search-input" placeholder="Search for your favorite dishes (e.g. burger, pizza, ice-cream)...">
-                 <i class="fas fa-times" id="close-search-btn"></i>
-             </div>
-             <div id="search-results" class="search-results-list"></div>
          </div>
      </div>
 

@@ -791,13 +791,94 @@ header .navbar a:hover {
 
 /* --- EatSure Header Style Updates --- */
 .eatsure-header {
-    height: 80px;
-    padding: 0 4%;
+    height: auto;
+    padding: 1.2rem 4%;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    gap: 12px;
+}
+
+.header-top {
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+.header-bottom {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    padding: 2px 0 6px 0;
+}
+
+.header-search-bar {
+    width: 65%;
+    display: flex;
+    align-items: center;
+    background: #f1f3f6;
+    border-radius: 30px;
+    padding: 8px 20px;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    transition: all 0.3s ease;
+    gap: 12px;
+}
+
+.header-search-bar:focus-within {
     background: #ffffff;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border-color: #ff3838;
+    box-shadow: 0 4px 15px rgba(255, 56, 56, 0.1);
+}
+
+.header-search-bar .search-bar-icon {
+    font-size: 1.8rem;
+    color: #747d8c;
+}
+
+.header-search-bar input {
+    border: none;
+    outline: none;
+    font-size: 1.5rem;
+    width: 100%;
+    color: #2f3542;
+    background: transparent;
+    text-transform: none;
+}
+
+.header-search-bar #clear-search-btn {
+    font-size: 1.6rem;
+    color: #a4b0be;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    display: none;
+}
+
+.header-search-bar #clear-search-btn:hover {
+    color: #ff3838;
+}
+
+.main-search-results-dropdown {
+    position: absolute;
+    top: 48px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 65%;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    border: 1px solid #f1f2f6;
+    z-index: 1100;
+    max-height: 320px;
+    overflow-y: auto;
+    display: none;
+    padding: 5px 0;
+}
+
+.main-search-results-dropdown.active {
+    display: block;
 }
 
 .eatsure-header .logo {
@@ -1548,13 +1629,13 @@ header .navbar a:hover {
 
 /* Adjust top padding of home section to fit the new header height */
 .home {
-    padding-top: 10rem;
+    padding-top: 16rem;
 }
 
 /* Responsive adjust */
 @media (max-width: 991px) {
     .eatsure-header {
-        height: 70px;
+        height: auto;
     }
     .location-selector-btn {
         margin-left: 10px;
@@ -1602,7 +1683,7 @@ header .navbar a:hover {
 /* --- Promo Carousel Styling --- */
 .promo-carousel-section {
     padding: 3rem 9% 1rem 9%;
-    margin-top: 80px;
+    margin-top: 130px;
     background: #fafbfc;
 }
 
