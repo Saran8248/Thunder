@@ -2362,3 +2362,370 @@ header .navbar a:hover {
         justify-content: center;
     }
 }
+
+
+/* ==========================================
+   PREMIUM UNIFIED PORTAL DARK THEME OVERRIDES
+   ========================================== */
+:root {
+    --dark: #0f172a;
+    --dark-card: #1e293b;
+    --text-main: #f8fafc;
+    --text-sub: #94a3b8;
+    --border-color: rgba(255, 255, 255, 0.08);
+}
+
+body {
+    background: radial-gradient(circle at top left, #1e1b4b, var(--dark) 70%) !important;
+    color: var(--text-main) !important;
+}
+
+/* Header */
+header, .eatsure-header {
+    background: rgba(30, 41, 59, 0.9) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+    backdrop-filter: blur(10px);
+}
+
+.logo span {
+    color: #ffffff !important;
+}
+
+/* Location Selector */
+.location-selector-btn {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+.location-selector-btn .main-loc {
+    color: #ffffff !important;
+}
+
+.location-selector-btn .sub-loc {
+    color: var(--text-sub) !important;
+}
+
+/* Delivery & Time Selector */
+.delivery-toggle {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+.delivery-active {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+}
+
+.delivery-time {
+    color: #ffffff !important;
+}
+
+.time-dropdown-menu {
+    background: var(--dark-card) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5) !important;
+}
+
+.time-dropdown-menu ul li {
+    color: var(--text-main) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+.time-dropdown-menu ul li:hover {
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Calendar & Schedule Popover */
+.schedule-popover {
+    background: var(--dark-card) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5) !important;
+}
+
+.schedule-popover p {
+    color: #ffffff !important;
+}
+
+/* Credit Wallet */
+.credit-dropdown-menu {
+    background: var(--dark-card) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5) !important;
+}
+
+.credit-dropdown-menu p {
+    color: #ffffff !important;
+}
+
+.credit-dropdown-menu span {
+    color: var(--text-sub) !important;
+}
+
+.header-action-item {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+.header-action-item .label {
+    color: var(--text-sub) !important;
+}
+
+.header-action-item .value {
+    color: #ffffff !important;
+}
+
+.header-action-item .single-label {
+    color: #ffffff !important;
+}
+
+/* Profile Dropdown */
+.profile-dropdown-menu {
+    background: var(--dark-card) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5) !important;
+}
+
+.profile-dropdown-menu ul li {
+    color: var(--text-main) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+.profile-dropdown-menu ul li:hover {
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Main Search Box */
+#main-search-input {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid var(--border-color) !important;
+    color: #ffffff !important;
+}
+
+.main-search-results {
+    background: var(--dark-card) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5) !important;
+}
+
+.search-result-item {
+    color: var(--text-main) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+.search-result-item:hover {
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Popular slider row */
+.popular-categories-row .category-card {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+.popular-categories-row .category-card span {
+    color: var(--text-main) !important;
+}
+
+/* Restaurant Card boxes */
+.popular .box-container .box {
+    background: var(--dark-card) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 .5rem 1.5rem rgba(0,0,0,0.2) !important;
+}
+
+.popular .box-container .box h3 {
+    color: #ffffff !important;
+}
+
+.popular .box-container .box p {
+    color: var(--text-sub) !important;
+}
+
+.popular .box-container .box .stars i {
+    color: #ffa502 !important;
+}
+
+/* Food Menu Items */
+.speciality .box-container .box {
+    background: var(--dark-card) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 .5rem 1.5rem rgba(0,0,0,0.2) !important;
+}
+
+.speciality .box-container .box h3 {
+    color: #ffffff !important;
+}
+
+.speciality .box-container .box p {
+    color: var(--text-sub) !important;
+}
+
+/* Cart Drawer */
+.cart-drawer-content {
+    background: var(--dark-card) !important;
+    color: var(--text-main) !important;
+    border-left: 1px solid var(--border-color) !important;
+    box-shadow: -10px 0 30px rgba(0,0,0,0.5) !important;
+}
+
+.cart-drawer-header {
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+.cart-drawer-header h2 {
+    color: #ffffff !important;
+}
+
+.cart-item {
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+.cart-item-name {
+    color: #ffffff !important;
+}
+
+.cart-item-price {
+    color: var(--text-sub) !important;
+}
+
+.qty-val {
+    color: #ffffff !important;
+}
+
+.qty-btn {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid var(--border-color) !important;
+    color: #ffffff !important;
+}
+
+.cart-credit-toggle-wrapper {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+.cart-credit-toggle-wrapper label {
+    color: #ffffff !important;
+}
+
+.cart-summary-breakdown {
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+.cart-summary {
+    color: #ffffff !important;
+}
+
+.cart-summary span {
+    color: #ffffff !important;
+}
+
+.coupon-box {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px dashed var(--border-color) !important;
+}
+
+.coupon-title {
+    color: #ffffff !important;
+}
+
+.coupon-desc {
+    color: var(--text-sub) !important;
+}
+
+/* Modals (Profile, Sign In) */
+.modal-content {
+    background: var(--dark-card) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5) !important;
+}
+
+.modal-content h2 {
+    color: #ffffff !important;
+}
+
+.modal-content p {
+    color: var(--text-sub) !important;
+}
+
+.modal-content label {
+    color: var(--text-sub) !important;
+}
+
+.modal-content input {
+    background: rgba(255,255,255,0.05) !important;
+    border: 1px solid var(--border-color) !important;
+    color: #ffffff !important;
+}
+
+.modal-content input::placeholder {
+    color: #64748b !important;
+}
+
+.profile-details-grid {
+    border: 1px solid var(--border-color) !important;
+    background: rgba(255, 255, 255, 0.02) !important;
+}
+
+.profile-details-grid div {
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+.profile-details-grid span {
+    color: #ffffff !important;
+}
+
+/* Step and Gallery Box Styles */
+.steps .box-container .box {
+    background: var(--dark-card) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+.steps .box-container .box h3 {
+    color: #ffffff !important;
+}
+
+.steps .box-container .box p {
+    color: var(--text-sub) !important;
+}
+
+.gallery .box-container .box {
+    background: var(--dark-card) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+.gallery .box-container .box h3 {
+    color: #ffffff !important;
+}
+
+.gallery .box-container .box p {
+    color: var(--text-sub) !important;
+}
+
+/* Section Main Heading Styles */
+.heading {
+    color: #ffffff !important;
+}
+
+/* Footer UI */
+.footer {
+    background: var(--dark-card) !important;
+    border-top: 1px solid var(--border-color) !important;
+}
+
+.footer .box-container .box h3 {
+    color: #ffffff !important;
+}
+
+.footer .box-container .box a {
+    color: var(--text-sub) !important;
+}
+
+.footer .box-container .box a:hover {
+    color: var(--red) !important;
+}
+
+.footer .credit {
+    color: var(--text-sub) !important;
+    border-top: .1rem solid var(--border-color) !important;
+}
