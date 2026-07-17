@@ -544,6 +544,8 @@ document.querySelector('#apply-coupon-btn')?.addEventListener('click', (e) => {
 });
 
 const addToCart = (name, price, img) => {
+    const wasEmpty = cart.length === 0;
+    
     const existingIdx = cart.findIndex(item => item.name === name);
     if (existingIdx !== -1) {
         cart[existingIdx].qty++;
@@ -551,7 +553,10 @@ const addToCart = (name, price, img) => {
         cart.push({ name, price, img, qty: 1 });
     }
     updateCartUI();
-    toggleModal('cart-drawer', 'open');
+    
+    if (wasEmpty) {
+        toggleModal('cart-drawer', 'open');
+    }
 };
 
 const setupOrderButtons = () => {
