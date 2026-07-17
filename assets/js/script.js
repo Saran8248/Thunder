@@ -617,27 +617,56 @@ profileSettingsForm?.addEventListener('submit', (e) => {
 });
 
 // Watch Pincode inputs (length == 6 auto-detects)
-document.querySelector('#profile-pincode')?.addEventListener('input', (e) => {
-    const val = e.target.value.trim();
+const pinInputEl = document.querySelector('#profile-pincode');
+const pinStatusEl = document.querySelector('#pincode-status');
+
+pinInputEl?.addEventListener('input', (e) => {
+    // Only allow numeric digits
+    let val = e.target.value.replace(/\D/g, '');
+    e.target.value = val;
+    
+    if (val.length < 6) {
+        if (pinStatusEl) pinStatusEl.style.display = 'none';
+        return;
+    }
+    
+    if (val.length > 6) {
+        val = val.substring(0, 6);
+        e.target.value = val;
+    }
+    
     if (val.length === 6) {
-        let addressStr = '';
-        if (val === '560102') {
-            addressStr = 'Sector 4, HSR Layout, Bengaluru';
-        } else if (val === '560034') {
-            addressStr = 'Koramangala 5th Block, Bengaluru';
-        } else if (val === '560038') {
-            addressStr = 'Indiranagar 100 Feet Rd, Bengaluru';
-        } else if (val === '560066') {
-            addressStr = 'Whitefield Main Rd, Bengaluru';
-        } else if (val === '560041') {
-            addressStr = 'Jayanagar 4th Block, Bengaluru';
-        } else {
-            addressStr = `Sector 1, Location Pin ${val}, Bengaluru`;
+        if (pinStatusEl) {
+            pinStatusEl.textContent = '⌛ Detecting...';
+            pinStatusEl.style.color = '#ffa502';
+            pinStatusEl.style.display = 'inline';
         }
         
-        const addrInput = document.querySelector('#profile-address');
-        if (addrInput) addrInput.value = addressStr;
-        updateHeaderLocation(addressStr);
+        setTimeout(() => {
+            let addressStr = '';
+            if (val === '560102') {
+                addressStr = 'Sector 4, HSR Layout, Bengaluru';
+            } else if (val === '560034') {
+                addressStr = 'Koramangala 5th Block, Bengaluru';
+            } else if (val === '560038') {
+                addressStr = 'Indiranagar 100 Feet Rd, Bengaluru';
+            } else if (val === '560066') {
+                addressStr = 'Whitefield Main Rd, Bengaluru';
+            } else if (val === '560041') {
+                addressStr = 'Jayanagar 4th Block, Bengaluru';
+            } else {
+                addressStr = `Sector 1, Pin ${val}, Bengaluru`;
+            }
+            
+            const addrInput = document.querySelector('#profile-address');
+            if (addrInput) addrInput.value = addressStr;
+            updateHeaderLocation(addressStr);
+            
+            if (pinStatusEl) {
+                pinStatusEl.textContent = '✓ Detected';
+                pinStatusEl.style.color = '#2ed573';
+            }
+        }, 600);
     }
 });
 
@@ -656,7 +685,14 @@ document.querySelector('#detect-address-btn')?.addEventListener('click', () => {
         const mockPin = '560102';
         
         if (addrInput) addrInput.value = mockAddress;
-        if (pinInput) pinInput.value = mockPin;
+        if (pinInput) {
+            pinInput.value = mockPin;
+            if (pinStatusEl) {
+                pinStatusEl.textContent = '✓ Detected';
+                pinStatusEl.style.color = '#2ed573';
+                pinStatusEl.style.display = 'inline';
+            }
+        }
         
         updateHeaderLocation(mockAddress);
         
