@@ -12,17 +12,7 @@ function fadeOut() {
 
 window.addEventListener('load', fadeOut);
 
-// Scroll interactions
 window.onscroll = () => {
-    const scrollTop = document.querySelector('#scroll-top');
-    if (scrollTop) {
-        if (window.scrollY > 60) {
-            scrollTop.classList.add('active');
-        } else {
-            scrollTop.classList.remove('active');
-        }
-    }
-
     // Close open dropdowns/drawers on scroll
     document.querySelector('#profile-dropdown')?.classList.remove('active');
 };
