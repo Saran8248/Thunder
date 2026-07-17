@@ -234,36 +234,10 @@ setInterval(() => {
 }, 5000);
 
 
-// --- Restaurant Brands Category Filters ---
-const brandCards = document.querySelectorAll('.brand-card');
-const menuGroups = document.querySelectorAll('.restaurant-menu-group');
-
-brandCards.forEach(card => {
-    card.addEventListener('click', () => {
-        // Clear active category slider filters first
-        document.querySelectorAll('.category-card').forEach(cc => cc.classList.remove('active'));
-        
-        brandCards.forEach(c => c.classList.remove('active'));
-        card.classList.add('active');
-        
-        const filter = card.getAttribute('data-filter');
-        
-        menuGroups.forEach(group => {
-            // Restore all items visibility
-            group.querySelectorAll('.box').forEach(b => b.style.display = 'block');
-            
-            if (filter === 'all' || group.getAttribute('data-brand') === filter) {
-                group.style.display = 'block';
-            } else {
-                group.style.display = 'none';
-            }
-        });
-    });
-});
-
-
 // --- Food Options Category Carousel Slider ---
 const categoryWrapper = document.querySelector('#categories-slider-wrapper');
+const menuGroups = document.querySelectorAll('.restaurant-menu-group');
+
 document.querySelector('#categories-next')?.addEventListener('click', () => {
     categoryWrapper?.scrollBy({ left: 240, behavior: 'smooth' });
 });
@@ -275,10 +249,6 @@ document.querySelector('#categories-prev')?.addEventListener('click', () => {
 const categoryCards = document.querySelectorAll('.category-card');
 categoryCards.forEach(card => {
     card.addEventListener('click', () => {
-        // Clear brand active filters first
-        brandCards.forEach(bc => bc.classList.remove('active'));
-        document.querySelector('.brand-card[data-filter="all"]')?.classList.add('active');
-        
         const cat = card.getAttribute('data-category').toLowerCase();
         const wasActive = card.classList.contains('active');
         
