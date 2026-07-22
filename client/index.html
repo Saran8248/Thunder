@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasty Bites - Home</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        :root {
+            --primary: #ffa502;
+            --dark: #f7f7f7;
+            --dark-card: #ffffff;
+            --text-main: #2f3542;
+            --text-sub: #57606f;
+        }
+        body {
+            background-color: var(--dark);
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .home-container {
+            text-align: center;
+            padding: 40px;
+            background: var(--dark-card);
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .nav-links {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .nav-links a {
+            padding: 10px 20px;
+            background: var(--primary);
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .nav-links a:hover {
+            background: #e09000;
+        }
+    </style>
+</head>
+<body>
+    <div class="home-container">
+        <a href="index.html" class="logo"><i class="fas fa-utensils"></i> Tasty <span>Bites</span></a>
+        <h1>Welcome to Tasty Bites</h1>
+        <p>Your one‑stop destination for delicious food from your favorite restaurants.</p>
+        <div class="nav-links">
+            <a href="customer.html">Customer Portal</a>
+            <a href="delivery.html">Delivery Dashboard</a>
+            <a href="restaurant.html">Restaurant Dashboard</a>
+        </div>
+    </div>
+    <!-- Font Awesome CDN -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>

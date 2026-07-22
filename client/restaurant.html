@@ -51,7 +51,7 @@
             gap: 10px;
             font-size: 2.2rem;
             font-weight: 800;
-            color: #ffffff;
+            color: var(--text-main);
             text-decoration: none;
         }
 
@@ -381,6 +381,15 @@
         <a href="../index.html" class="logo"><i class="fas fa-utensils"></i> Tasty <span>Bites</span></a>
         
         <div class="profile-info">
+            <!-- Shop Open/Close toggle -->
+            <div id="shop-status-toggle-wrapper" style="display: none; align-items: center; gap: 8px; margin-right: 15px; background: rgba(0,0,0,0.03); padding: 5px 12px; border-radius: 20px; border: 1px solid #dfe4ea;">
+                <span id="shop-status-text" style="font-size: 1.2rem; font-weight: 800; color: #2ed573; text-transform: none;">Shop: OPEN</span>
+                <label class="switch">
+                    <input type="checkbox" id="shop-status-checkbox" checked>
+                    <span class="slider" style="background-color: #ff3838;"></span>
+                </label>
+            </div>
+            
             <div class="profile-avatar">
                 <i class="fas fa-store"></i>
             </div>
@@ -805,16 +814,53 @@
         };
 
         const goLiveRestaurant = () => {
-            const storeName = document.querySelector('#ob-store-name').value || 'Oven Story Pizzas';
-            localStorage.setItem('restaurantName', storeName);
-            localStorage.setItem('restaurantOnboarded', 'true');
-            
-            document.querySelectorAll('.profile-name').forEach(el => el.textContent = storeName);
-            document.querySelector('#onboarding-wizard-view').style.display = 'none';
-            document.querySelector('#restaurant-dashboard-view').style.display = 'grid';
-            
-            alert('Congratulations! Your restaurant is now LIVE. You can manage incoming orders.');
-        };
+    const storeName = document.querySelector('#ob-store-name').value || 'Oven Story Pizzas';
+    localStorage.setItem('restaurantName', storeName);
+    localStorage.setItem('restaurantOnboarded', 'true');
+    // Initialize shop as open when going live
+    localStorage.setItem('shopOpen', 'true');
+    
+    document.querySelectorAll('.profile-name').forEach(el => el.textContent = storeName);
+    document.querySelector('#onboarding-wizard-view').style.display = 'none';
+    document.querySelector('#restaurant-dashboard-view').style.display = 'grid';
+    // Update toggle UI
+    const toggleWrapper = document.getElementById('shop-status-toggle-wrapper');
+    if (toggleWrapper) toggleWrapper.style.display = 'flex';
+    const statusText = document.getElementById('shop-status-text');
+    if (statusText) statusText.textContent = 'Shop: OPEN';
+    const checkbox = document.getElementById('shop-status-checkbox');
+    if (checkbox) {
+        checkbox.checked = true;
+        checkbox.nextElementSibling.style.backgroundColor = '#2ed573'; // green when open
+    }
+    alert('Congratulations! Your restaurant is now LIVE. You can manage incoming orders.');
+};
+
+// Initialize shop status UI on dashboard load
+window.addEventListener('DOMContentLoaded', () => {
+    const dashboard = document.getElementById('restaurant-dashboard-view');
+    if (dashboard && dashboard.style.display !== 'none') {
+        const shopOpen = JSON.parse(localStorage.getItem('shopOpen') ?? 'true');
+        const statusText = document.getElementById('shop-status-text');
+        const checkbox = document.getElementById('shop-status-checkbox');
+        const toggleWrapper = document.getElementById('shop-status-toggle-wrapper');
+        if (toggleWrapper) toggleWrapper.style.display = 'flex';
+        if (statusText) statusText.textContent = shopOpen ? 'Shop: OPEN' : 'Shop: CLOSED';
+        if (checkbox) {
+            checkbox.checked = shopOpen;
+            // adjust slider color based on state
+            const slider = checkbox.nextElementSibling;
+            if (slider) slider.style.backgroundColor = shopOpen ? '#2ed573' : '#ff3838';
+            checkbox.addEventListener('change', () => {
+                const open = checkbox.checked;
+                localStorage.setItem('shopOpen', open);
+                if (statusText) statusText.textContent = open ? 'Shop: OPEN' : 'Shop: CLOSED';
+                if (slider) slider.style.backgroundColor = open ? '#2ed573' : '#ff3838';
+                renderKitchenOrders();
+            });
+        }
+    }
+});
 
         // Mock DB elements
         let kitchenOrders = [
@@ -844,32 +890,42 @@
         let completedCount = 28;
 
         const renderKitchenOrders = () => {
-            const container = document.querySelector('#kitchen-orders-container');
-            if (!container) return;
+    const container = document.querySelector('#kitchen-orders-container');
+    if (!container) return;
 
-            if (kitchenOrders.length === 0) {
-                container.innerHTML = `
-                    <div style="padding: 40px; text-align: center; color: var(--text-sub); font-size: 1.4rem;">
-                        <i class="fas fa-check-double" style="font-size: 3.5rem; color: #2ed573; margin-bottom: 10px;"></i>
-                        <p>No active kitchen orders. Everything is clear!</p>
-                    </div>
-                `;
-                return;
-            }
+    // Respect shop open/closed status
+    const shopOpen = JSON.parse(localStorage.getItem('shopOpen') ?? 'true');
+    if (!shopOpen) {
+        container.innerHTML = `<div style="padding: 40px; text-align: center; color: var(--text-sub); font-size: 1.4rem;">
+            <i class="fas fa-store-slash" style="font-size: 3.5rem; color: #ff3838; margin-bottom: 10px;"></i>
+            <p>Shop is currently CLOSED. Orders are hidden.</p>
+        </div>`;
+        return;
+    }
 
-            container.innerHTML = '';
-            kitchenOrders.forEach((ord, idx) => {
-                const card = document.createElement('div');
-                card.className = 'order-row';
-                
-                let actionBtn = '';
-                if (ord.status === 'Incoming') {
-                    actionBtn = `<button class="btn btn-primary" onclick="updateOrderStatus(${idx}, 'Preparing')">Accept Order</button>`;
-                } else if (ord.status === 'Preparing') {
-                    actionBtn = `<button class="btn btn-success" onclick="updateOrderStatus(${idx}, 'Dispatched')">Dispatch Order</button>`;
-                } else {
-                    actionBtn = `<span style="font-size: 1.2rem; color: #2ed573; font-weight: 700;"><i class="fas fa-shipping-fast"></i> Dispatched to Rahul Sharma</span>`;
-                }
+    if (kitchenOrders.length === 0) {
+        container.innerHTML = `
+            <div style="padding: 40px; text-align: center; color: var(--text-sub); font-size: 1.4rem;">
+                <i class="fas fa-check-double" style="font-size: 3.5rem; color: #2ed573; margin-bottom: 10px;"></i>
+                <p>No active kitchen orders. Everything is clear!</p>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = '';
+    kitchenOrders.forEach((ord, idx) => {
+        const card = document.createElement('div');
+        card.className = 'order-row';
+        
+        let actionBtn = '';
+        if (ord.status === 'Incoming') {
+            actionBtn = `<button class="btn btn-primary" onclick="updateOrderStatus(${idx}, 'Preparing')">Accept Order</button>`;
+        } else if (ord.status === 'Preparing') {
+            actionBtn = `<button class="btn btn-success" onclick="updateOrderStatus(${idx}, 'Dispatched')">Dispatch Order</button>`;
+        } else {
+            actionBtn = `<span style="font-size: 1.2rem; color: #2ed573; font-weight: 700;"><i class="fas fa-shipping-fast"></i> Dispatched to Rahul Sharma</span>`;
+        };
 
                 card.innerHTML = `
                     <div class="order-row-top">
