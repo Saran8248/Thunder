@@ -700,14 +700,26 @@ setupOrderButtons();
 
 // --- Sign In Logic ---
 const signinForm = document.querySelector('#signin-form');
-signinForm?.addEventListener('submit', (e) => {
+signinForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = document.querySelector('#signin-email')?.value || 'Guest';
-    const username = email.split('@')[0];
+    const password = document.querySelector('#signin-password')?.value || '';
+    const btn = signinForm.querySelector('button[type="submit"]');
     
-    updateUserSignInState(username);
-    toggleModal('signin-modal', 'close');
-    signinForm.reset();
+    if (btn) btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing In...';
+    
+    try {
+        const { user } = await Auth.login(email, password);
+        const username = user.name || email.split('@')[0];
+        
+        updateUserSignInState(username);
+        toggleModal('signin-modal', 'close');
+        signinForm.reset();
+    } catch (err) {
+        alert(err.message || 'Login failed');
+    } finally {
+        if (btn) btn.innerHTML = 'Sign In';
+    }
 });
 
 const updateUserSignInState = (nameVal) => {
@@ -796,7 +808,7 @@ pinInputEl?.addEventListener('input', (e) => {
 });
 
 // Auto-Detect Location/Address Button
-document.querySelector('#detect-address-btn')?.addEventListener('click', () => {
+document.querySelector('#detect-address-btn')?.addEventListener('click', async () => {
     const loader = document.querySelector('#address-detect-loader');
     const detectBtn = document.querySelector('#detect-address-btn');
     const addrInput = document.querySelector('#profile-address');
@@ -805,25 +817,27 @@ document.querySelector('#detect-address-btn')?.addEventListener('click', () => {
     if (loader) loader.style.display = 'block';
     if (detectBtn) detectBtn.disabled = true;
     
-    setTimeout(() => {
-        const mockAddress = 'Sector 3, HSR Layout, Bengaluru';
-        const mockPin = '560102';
+    try {
+        const result = await LocationService.getCurrentLocation();
+        if (addrInput) addrInput.value = result.address;
         
-        if (addrInput) addrInput.value = mockAddress;
+        // Mock pin for detected location
         if (pinInput) {
-            pinInput.value = mockPin;
+            pinInput.value = '560102';
+            const pinStatusEl = document.querySelector('#pincode-status');
             if (pinStatusEl) {
                 pinStatusEl.textContent = '✓ Detected';
                 pinStatusEl.style.color = '#2ed573';
                 pinStatusEl.style.display = 'inline';
             }
         }
-        
-        updateHeaderLocation(mockAddress);
-        
+        updateHeaderLocation(result.address);
+    } catch (err) {
+        alert(err.message || 'Failed to detect location.');
+    } finally {
         if (loader) loader.style.display = 'none';
         if (detectBtn) detectBtn.disabled = false;
-    }, 1500);
+    }
 });
 
 // Profile Dropdown links handler

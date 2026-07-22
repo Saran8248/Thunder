@@ -448,6 +448,10 @@
             <div class="wizard-panel active" id="wizard-panel-1" style="display: block;">
                 <h3 style="font-size: 1.8rem; font-weight: 700; color: var(--text-main); margin-bottom: 15px; text-transform: none;"><i class="fas fa-id-card"></i> 1. Restaurant Registration</h3>
                 <div class="form-group" style="margin-bottom: 15px;">
+                    <label style="font-size: 1.2rem; font-weight: 700; color: var(--text-sub); margin-bottom: 5px; display: block; text-transform: none;">Restaurant Profile Picture / Logo</label>
+                    <input type="file" id="ob-profile-pic" class="form-control" style="width: 100%; text-transform: none;" accept="image/*" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 15px;">
                     <label style="font-size: 1.2rem; font-weight: 700; color: var(--text-sub); margin-bottom: 5px; display: block; text-transform: none;">Restaurant Name</label>
                     <input type="text" id="ob-store-name" class="form-control" style="width: 100%; text-transform: none;" placeholder="e.g. Oven Story Pizzas" required>
                 </div>
@@ -636,9 +640,25 @@
                         <label for="item-name">Dish Name</label>
                         <input type="text" id="item-name" class="form-control" placeholder="e.g. Tandoori Paneer Pizza" required>
                     </div>
+                    <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div>
+                            <label for="item-price">Price (₹)</label>
+                            <input type="number" id="item-price" class="form-control" placeholder="e.g. 350" style="width: 100%;" required>
+                        </div>
+                        <div>
+                            <label for="item-quality">Quality / Portion</label>
+                            <select id="item-quality" class="form-control" style="width: 100%;">
+                                <option value="Regular">Regular</option>
+                                <option value="Medium">Medium</option>
+                                <option value="Large">Large</option>
+                                <option value="Full Portion">Full Portion</option>
+                                <option value="Half Portion">Half Portion</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="form-group">
-                        <label for="item-price">Price (₹)</label>
-                        <input type="number" id="item-price" class="form-control" placeholder="e.g. 350" required>
+                        <label for="item-image">Product Image</label>
+                        <input type="file" id="item-image" class="form-control" accept="image/*" required>
                     </div>
                     <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px; padding: 10px;">Add to Menu Catalog</button>
                 </form>
@@ -997,11 +1017,12 @@ window.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const name = document.querySelector('#item-name').value;
             const price = parseInt(document.querySelector('#item-price').value);
+            const quality = document.querySelector('#item-quality')?.value || 'Regular';
             
             menuCatalog.push({
-                name,
+                name: `${name} (${quality})`,
                 price,
-                img: "assets/images/p-3.jpg", // default pizza avatar
+                img: "assets/images/p-3.jpg", // default pizza avatar since we simulate upload
                 available: true
             });
 

@@ -421,6 +421,17 @@
 
         <!-- Right Map Navigation Panel -->
         <div>
+            <!-- Rider Profile -->
+            <div class="map-panel" style="margin-bottom: 30px;">
+                <div class="section-title" style="margin-bottom: 15px;"><i class="fas fa-id-card"></i> Rider Profile</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; font-size: 1.3rem;">
+                    <div><span style="color: var(--text-sub);">Vehicle:</span> <strong>Honda Activa</strong> (KA-01-AB-1234)</div>
+                    <div><span style="color: var(--text-sub);">License:</span> <strong>DL-KA-2020-891</strong></div>
+                    <div><span style="color: var(--text-sub);">Account:</span> <strong>HDFC Bank **** 5678</strong></div>
+                    <div><span style="color: var(--text-sub);">Rating:</span> <strong>4.8 <i class="fas fa-star" style="color: #f1c40f;"></i></strong></div>
+                </div>
+            </div>
+
             <div class="map-panel">
                 <div class="section-title" style="margin-bottom: 0;"><i class="fas fa-navigation"></i> Real-time Map Nav</div>
                 <div class="mock-map">
@@ -456,7 +467,7 @@
                 items: "1x Double Cheese Pizza, 1x Choco Lava Cake",
                 address: "Sector 4, 19th Main, HSR Layout, Bengaluru",
                 payout: 50,
-                status: "Pending Pickup" // Pending Pickup, Out for Delivery, Delivered
+                status: "Unassigned" // Unassigned, Pending Pickup, Out for Delivery, Delivered
             }
         ];
 
@@ -487,7 +498,9 @@
                 else if (run.status === 'Delivered') badgeClass = 'completed';
 
                 let actionButtons = '';
-                if (run.status === 'Pending Pickup') {
+                if (run.status === 'Unassigned') {
+                    actionButtons = `<button class="btn btn-primary" onclick="updateStatus(${idx}, 'Pending Pickup')">Accept Order</button>`;
+                } else if (run.status === 'Pending Pickup') {
                     actionButtons = `<button class="btn btn-primary" onclick="updateStatus(${idx}, 'Out for Delivery')">Mark Picked Up</button>`;
                 } else if (run.status === 'Out for Delivery') {
                     actionButtons = `<button class="btn btn-primary" onclick="updateStatus(${idx}, 'Delivered')">Confirm Delivery</button>`;
@@ -531,6 +544,10 @@
         };
 
         const updateStatus = (idx, newStatus) => {
+            if (newStatus === 'Pending Pickup') {
+                alert('Order Accepted! The customer has been notified that you are on the way to the restaurant.');
+            }
+            
             runs[idx].status = newStatus;
             
             if (newStatus === 'Delivered') {
