@@ -1,0 +1,14 @@
+{
+  "name": "thunder_food_app",
+  "version": "1.0.0",
+  "description": "Thunder Food Delivery Platform",
+  "main": "index.js",
+  "scripts": {
+    "dev:client": "cd client-v2 && npm run dev",
+    "dev:server": "cd server-v2 && node server.js"
+  },
+  "dependencies": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

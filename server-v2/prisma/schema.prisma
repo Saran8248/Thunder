@@ -1,0 +1,133 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id            String   @id @default(uuid())
+  name          String
+  email         String   @unique
+  phone         String?  @unique
+  password      String
+  role          String   @default("CUSTOMER")
+  profilePic    String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Tasty Credit System
+  creditBalance Float    @default(3000)
+  loanUsed      Float    @default(0)
+  repayAmount   Float    @default(0)
+  dueDate       DateTime?
+
+  // Relations
+  addresses     Address[]
+  orders        Order[]       @relation("CustomerOrders")
+  restaurant    Restaurant?
+  riderProfile  RiderProfile?
+}
+
+model Address {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  type      String   // Home, Work, Other
+  address   String
+  lat       Float?
+  lng       Float?
+  isDefault Boolean  @default(false)
+}
+
+model Restaurant {
+  id          String   @id @default(uuid())
+  ownerId     String   @unique
+  owner       User     @relation(fields: [ownerId], references: [id])
+  name        String
+  description String?
+  cuisine     String?
+  logo        String?
+  coverImage  String?
+  fssai       String?
+  gstin       String?
+  isVerified  Boolean  @default(false)
+  isOpen      Boolean  @default(false)
+  address     String
+  lat         Float?
+  lng         Float?
+  
+  menuItems   MenuItem[]
+  orders      Order[]
+}
+
+model MenuItem {
+  id           String     @id @default(uuid())
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  name         String
+  description  String?
+  price        Float
+  image        String?
+  category     String
+  isVeg        Boolean    @default(true)
+  isAvailable  Boolean    @default(true)
+  
+  orderItems   OrderItem[]
+}
+
+model RiderProfile {
+  id            String   @id @default(uuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id])
+  vehicleType   String
+  vehicleNumber String
+  licenseNumber String
+  isVerified    Boolean  @default(false)
+  isOnline      Boolean  @default(false)
+  currentLat    Float?
+  currentLng    Float?
+  
+  deliveries    Order[]  @relation("RiderDeliveries")
+}
+
+model Order {
+  id           String      @id @default(uuid())
+  customerId   String
+  customer     User        @relation("CustomerOrders", fields: [customerId], references: [id])
+  restaurantId String
+  restaurant   Restaurant  @relation(fields: [restaurantId], references: [id])
+  riderId      String?
+  rider        RiderProfile? @relation("RiderDeliveries", fields: [riderId], references: [id])
+  
+  status       String      // PENDING, ACCEPTED, PREPARING, PACKED, ASSIGNED, PICKED_UP, DELIVERED, CANCELLED
+  totalAmount  Float
+  deliveryFee  Float
+  tax          Float
+  deliveryAddr String
+  lat          Float?
+  lng          Float?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  
+  // Tasty Credit Fields
+  paidAmount   Float       @default(0)
+  creditUsed   Float       @default(0)
+  isCreditOrder Boolean    @default(false)
+  repaymentDue Float       @default(0)
+  repaymentDueDate DateTime?
+  
+  items        OrderItem[]
+}
+
+model OrderItem {
+  id         String   @id @default(uuid())
+  orderId    String
+  order      Order    @relation(fields: [orderId], references: [id])
+  menuItemId String
+  menuItem   MenuItem @relation(fields: [menuItemId], references: [id])
+  quantity   Int
+  price      Float
+}
